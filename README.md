@@ -1,19 +1,19 @@
 appjsf
 ======
 
-sistema base jsf
-SISTEMA SIMPLES EM JSF
-
-JDK8
-NETBEANS 8.0.2
-JSF 2.2.7
-PRIMEFACES 5.1
-HIBERNATE (core,entitymanager,enver,ehcache) 4.3.7
-POSTGRESQL 9.3
-TOMCAT 8.0.9
-IREPORT 5.6.1
-PRETTYFACES 2.0.12
-TESTADO NO GOOGLE CROME 39
+sistema base jsf<br/>
+SISTEMA SIMPLES EM JSF<br/>
+<br/><br/>
+JDK8<br/>
+NETBEANS 8.0.2<br/>
+JSF 2.2.7<br/>
+PRIMEFACES 5.1<br/>
+HIBERNATE (core,entitymanager,enver,ehcache) 4.3.7<br/>
+POSTGRESQL 9.3<br/>
+TOMCAT 8.0.9<br/>
+IREPORT 5.6.1<br/>
+PRETTYFACES 2.0.12<br/>
+TESTADO NO GOOGLE CROME 39<br/>
 				-estrategia de cache usando hibernate ehcache 
 				-versoes usando hibernate envers  
 				-pool de conexao no context.xml 
