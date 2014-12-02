@@ -2,7 +2,7 @@ appjsf
 ======
 
 sistema base jsf<br/>
-<a href='http://youtu.be/jH5qALIvHXA'>video demosntracao</a><br/
+<a href='http://youtu.be/jH5qALIvHXA'>video demosntracao</a><br/>
 SISTEMA SIMPLES EM JSF<br/>
 <br/><br/>
 JDK8<br/>
