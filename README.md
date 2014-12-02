@@ -2,9 +2,9 @@ appjsf
 ======
 
 sistema base jsf<br/>
-<a href='http://youtu.be/jH5qALIvHXA'>video demosntracao</a><br/>
+<a href='http://youtu.be/jH5qALIvHXA'>video demonstracao</a><br/>
 SISTEMA SIMPLES EM JSF<br/>
-<br/><br/>
+
 JDK8<br/>
 NETBEANS 8.0.2<br/>
 JSF 2.2.7<br/>
