@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <h:outputStylesheet name="./css/default.css"/>
+        <h:outputStylesheet name="./css/cssLayout.css"/>
+        <h:outputScript name="./js/funcoes.js"/>
+        <title>APPJSF - <ui:insert name="titulo"></ui:insert></title>
+    </h:head>
+
+    <h:body> 
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" header="APPSJSF" style="text-align: center">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+
+                <ui:insert name="conteudo"></ui:insert>
+
+
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" style="text-align: center" header="APPSJSF">
+                <div align="center">
+                    <p:clock pattern="dd/MM/yyyy HH:mm:ss"/>
+                </div>
+            </p:layoutUnit>
+
+        </p:layout>
+
+        <h:form>
+            <p:confirmDialog global="true" >
+                <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+        </h:form>
+
+        <p:dialog widgetVar="statusDialog" header="Status" width="200"  
+                  draggable="false" closable="true" resizable="false"
+                  modal="true" appendTo="@(body)">  
+            Processando... 
+        </p:dialog> 
+
+
+        <p:ajaxExceptionHandler type="javax.faces.application.ViewExpiredException"
+                                update="exceptionDialog"
+                                onexception="PF('exceptionDialog').show();" />
+        <p:dialog  id="exceptionDialog" 
+                   header="Página Expirada!" 
+                   widgetVar="exceptionDialog"
+                   modal="true"
+                   >
+
+            <div style="text-align: center;">
+                <p style="color: red">Página Expirada!</p>
+                <br/>
+                <p:button onclick="document.location.href = 'document.location.href;'"
+                          value="Atualiza Pagina!"/>
+
+            </div>
+        </p:dialog>
+
+    </h:body>
+
+</html>

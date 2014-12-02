@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="ehcache.xsd" updateCheck="true"
+         monitoring="autodetect" dynamicConfig="true">
+ 
+    <diskStore path="java.io.tmpdir\appjsf" />
+ 
+    <defaultCache   maxElementsInMemory="20000"
+                    eternal="false"
+                    timeToIdleSeconds="90" 
+                    timeToLiveSeconds="180"
+                    diskSpoolBufferSizeMB="60"
+                    maxElementsOnDisk="2000000"
+                    diskExpiryThreadIntervalSeconds="120"
+                    memoryStoreEvictionPolicy="LRU" 
+                    diskPersistent="true"
+                    overflowToDisk="true">
+        
+    </defaultCache>
+    
+    <cache
+        name="geral" 
+        maxElementsInMemory="20000"
+        eternal="false"
+        timeToIdleSeconds="90" 
+        timeToLiveSeconds="180"
+        diskSpoolBufferSizeMB="60"
+        maxElementsOnDisk="2000000"
+        diskExpiryThreadIntervalSeconds="120"
+        memoryStoreEvictionPolicy="LRU" 
+        diskPersistent="true"
+        overflowToDisk="true">
+        
+    </cache>
+ 
+    <cache name="org.hibernate.cache.internal.StandardQueryCache"
+           maxElementsInMemory="20000"
+           eternal="false"
+           timeToIdleSeconds="90" 
+           timeToLiveSeconds="180"
+           diskSpoolBufferSizeMB="60"
+           maxElementsOnDisk="2000000"
+           diskExpiryThreadIntervalSeconds="120"
+           memoryStoreEvictionPolicy="LRU" 
+           diskPersistent="true"
+           overflowToDisk="true">
+        
+    </cache>
+ 
+    <cache name="org.hibernate.cache.spi.UpdateTimestampsCache"
+           maxElementsInMemory="20000"
+           eternal="false"
+           timeToIdleSeconds="90" 
+           timeToLiveSeconds="180"
+           diskSpoolBufferSizeMB="60"
+           maxElementsOnDisk="2000000"
+           diskExpiryThreadIntervalSeconds="120"
+           memoryStoreEvictionPolicy="LRU" 
+           diskPersistent="true"
+           overflowToDisk="true">
+        
+    </cache>
+  
+</ehcache>

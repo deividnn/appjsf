@@ -1,0 +1,26 @@
+<pretty-config xmlns="http://ocpsoft.org/schema/rewrite-config-prettyfaces" 
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+               xsi:schemaLocation="http://ocpsoft.org/schema/rewrite-config-prettyfaces
+                      http://ocpsoft.org/xml/ns/prettyfaces/rewrite-config-prettyfaces.xsd">
+
+    <url-mapping id="index">
+        <pattern value="/restrito/index" />
+        <view-id value="/restrito/index.jsf" />
+    </url-mapping>
+    
+    <url-mapping id="usuarios">
+        <pattern value="/restrito/usuarios" />
+        <view-id value="/restrito/usuarios.jsf" />
+    </url-mapping>
+    
+    <url-mapping id="index">
+        <pattern value="/index" />
+        <view-id value="/index.jsf" />
+    </url-mapping>
+    
+    <url-mapping id="erro">
+        <pattern value="/erro" />
+        <view-id value="/erro.jsf" />
+    </url-mapping>
+    
+</pretty-config>

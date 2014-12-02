@@ -1,0 +1,461 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../WEB-INF/restrito.xhtml">
+
+            <ui:define name="titulo">
+                Usuarios
+            </ui:define>
+
+            <ui:define name="conteudo">
+                <h:form id="usuario">
+                    <p:focus for=":usuario:txt"/>
+                    <p:panel header="Gerenciar Usuarios" style="text-align: center">
+
+                        <p:panelGrid columns="6" styleClass="semBorda">
+
+                            <p:outputLabel value="Pesquisar por:" />
+                            <p:selectOneMenu style="margin: 0;padding: 0"
+                                             value="#{usuarioBean.colunaSelecionada}">
+                                <p:ajax event="change" update="@this"/>
+                                <f:selectItems value="#{usuarioBean.colunas}"
+                                               var="co"
+                                               itemValue="#{co}"
+                                               itemLabel="#{co}"/>
+                            </p:selectOneMenu>
+                            <p:inputText 
+                                value="#{usuarioBean.texto}"
+                                style="width:200px"
+                                maxlength="32"
+                                id="txt"
+                                placeholder="palavra chave">
+                                <p:ajax event="keyup"
+                                        update=":usuario:lista"
+                                        listener="#{usuarioBean.pesquisar()}"/>
+
+                            </p:inputText>
+
+                            <p:outputLabel value="Exportar:" />
+                            <p:selectOneMenu style="margin: 0;padding: 0"
+                                             value="#{usuarioBean.tipoExportacao}">
+                                <p:ajax event="change" update="@this"/>
+                                <f:selectItem itemValue="pdf" itemLabel="pdf"/>
+                            </p:selectOneMenu>
+                            <p:commandButton value="gerar"
+                                             ajax="false"   
+                                             onclick="form.target = '_blank'"
+                                             actionListener="#{usuarioBean.exportar()}"
+                                             update="@form"/>
+                        </p:panelGrid>
+
+                        <p:dataTable value="#{usuarioBean.usuarios}"
+                                     var="usu"
+                                     id="lista"
+                                     rowKey="#{usu.id}"
+                                     emptyMessage="nenhum usuario"
+                                     rows="10"
+                                     lazy="true"
+                                     paginator="true"
+                                     paginatorPosition="bottom"
+                                     scrollable="true"
+                                     scrollHeight="250"
+                                     selectionMode="single"
+                                     selection="#{usuarioBean.usuarioSelecionado}">
+
+                            <p:ajax event="rowSelect"
+                                    onstart="PF('statusDialog').show()" 
+                                    onsuccess="PF('statusDialog').hide();"
+                                    update=":usuario:opcoes"/>
+
+                            <p:column headerText="Codigo"
+                                      width="30">
+                                <h:outputText value="#{usu.id}"/>
+                            </p:column>
+
+                            <p:column headerText="Usuario"
+                                      width="100">
+                                <h:outputText value="#{usu.usuario}"/>
+                            </p:column>
+
+                            <p:column headerText="Email"
+                                      width="200">
+                                <h:outputText value="#{usu.email}"/>
+                            </p:column>
+
+                            <p:column headerText="Status"
+                                      width="50">
+                                <h:outputText value="#{usuarioBean.pegarStatus(usu.status)}"/>
+                            </p:column>
+
+                            <p:column headerText="Nivel"
+                                      width="70">
+                                <h:outputText value="#{usu.nivel}"/>
+                            </p:column>
+
+                            <p:column headerText="Data Cadastro"
+                                      width="80">
+                                <h:outputText value="#{usu.dataCadastro}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/>
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Data Alteracao"
+                                      width="80">
+                                <h:outputText value="#{usu.dataAlteracao}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/>
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Usuario Alteracao"
+                                      width="80">
+                                <h:outputText value="#{util.nomeUsuario(usu.usuarioAlteracao)}"/>
+                            </p:column>
+
+                        </p:dataTable>
+                        <div align="center">
+                            <p:panelGrid columns="5" id='opcoes' styleClass="semBorda">
+
+                                <p:commandButton value="Criar (F6)"
+                                                 rendered="#{session.getAttribute('usuarioLogado').nivel ne 'USUARIO'}"
+                                                 actionListener="#{usuarioBean.inserir()}"
+                                                 update=":criar"
+                                                 onclick="PF('dlgcriar').show();"
+                                                 style="width: 100px"
+                                                 oncomplete="removerDesabilitados();"
+                                                 onstart="PF('statusDialog').show()" 
+                                                 onsuccess="PF('statusDialog').hide();"
+                                                 styleClass="criar"
+                                                 />
+
+                                <p:commandButton value="Editar (F7)"
+                                                 actionListener="#{usuarioBean.editar()}"
+                                                 update=":criar"
+                                                 onclick="PF('dlgcriar').show();"
+                                                 style="width: 100px"
+                                                 onstart="PF('statusDialog').show()" 
+                                                 onsuccess="PF('statusDialog').hide();"
+                                                 oncomplete="removerDesabilitados();"
+                                                 styleClass="editar"
+                                                 disabled="#{usuarioBean.usuarioSelecionado.id eq null or session.getAttribute('usuarioLogado').id eq usuarioBean.usuarioSelecionado.id}"
+                                                 />
+
+                                <p:commandButton value="Deletar"
+                                                 rendered="#{session.getAttribute('usuarioLogado').nivel eq 'SUPER'}"
+                                                 actionListener="#{usuarioBean.excluir()}"
+                                                 update="@form"
+                                                 style="width: 100px"
+                                                 onstart="PF('statusDialog').show()" 
+                                                 onsuccess="PF('statusDialog').hide();"
+                                                 disabled="#{usuarioBean.usuarioSelecionado.id eq null}"
+                                                 >
+                                    <p:confirm header="Confirmação" message="Tem certeza?" icon="ui-icon-alert" />
+                                </p:commandButton>
+
+                                <p:commandButton value="Ver (F8)"
+                                                 actionListener="#{usuarioBean.ver()}"
+                                                 update=":criar"
+                                                 onclick="PF('dlgcriar').show();"
+                                                 style="width: 100px"
+                                                 onstart="PF('statusDialog').show()" 
+                                                 onsuccess="PF('statusDialog').hide();"
+                                                 oncomplete="removerDesabilitados();"
+                                                 styleClass="ver"
+                                                 disabled="#{usuarioBean.usuarioSelecionado.id eq null}"
+                                                 />
+
+                                <p:commandButton value="Revisoes (F9)"
+                                                 actionListener="#{usuarioBean.verRevisoes()}"
+                                                 update=":revisoes"
+                                                 onclick="PF('dlgrevisoes').show();"
+                                                 style="width: 100px"
+                                                 onstart="PF('statusDialog').show()" 
+                                                 onsuccess="PF('statusDialog').hide();"
+                                                 styleClass="revisoes"
+                                                 disabled="#{usuarioBean.usuarioSelecionado.id eq null}"
+                                                 />
+
+                            </p:panelGrid>
+                        </div>
+
+                    </p:panel>
+                </h:form>
+
+
+                <p:dialog
+                    modal="true"
+                    appendTo="@(body)"
+                    widgetVar="dlgcriar"
+                    width="500"
+                    height="450"
+                    resizable="false"
+                    closable="true"
+                    closeOnEscape="true"
+                    >
+
+                    <h:form id="criar">
+                        <p:focus context="@form"/>
+                        <p:messages closable="true" autoUpdate="true"/>
+                        <p:panelGrid columns="2" styleClass="semBorda">
+                            <p:graphicImage height="100"
+                                            width="100"
+                                            id="pic"
+                                            url="#{usuarioBean.retornaFoto()}"/>         
+                            <h:outputText value="."   rendered="#{usuarioBean.ver eq false}"/>
+                            <p:commandButton onclick="PF('dlgfoto').show();"
+                                             update=":foto"
+                                             id="foto"
+                                             rendered="#{usuarioBean.ver eq false}"
+                                             immediate="true"
+                                             value="foto"
+                                             onstart="PF('statusDialog').show()" 
+                                             onsuccess="PF('statusDialog').hide();"
+                                             style="width: 100px"
+                                             />
+                            <h:outputText value="."/>
+
+                            <p:outputLabel value="Codigo:" rendered="#{usuarioBean.usuario.id ne null}"/>
+                            <h:outputText value="#{usuarioBean.usuario.id}"  rendered="#{usuarioBean.usuario.id ne null}"/>
+
+                            <p:outputLabel value="Usuario:" for="usuario"/>
+                            <p:inputText value="#{usuarioBean.usuario.usuario}"
+                                         maxlength="32"
+                                         required="true"
+                                         id="usuario"
+                                         disabled="#{usuarioBean.ver}"
+                                         placeholder="usuario"
+                                         requiredMessage="preencha o campo usuario"/>
+
+                            <p:outputLabel value="Senha:" for="senha" rendered="#{usuarioBean.usuario.id eq null}"/>
+                            <p:password value="#{usuarioBean.usuario.senha}"
+                                        required="true"
+                                        id="senha"
+                                        disabled="#{usuarioBean.ver}"
+                                        rendered="#{usuarioBean.usuario.id eq null}"
+                                        requiredMessage="preencha o campo senha"
+                                        feedback="true"
+                                        promptLabel="digite a senha"
+                                        placeholder="senha"
+                                        goodLabel="senha boa"
+                                        weakLabel="senha fraca"
+                                        strongLabel="senha forte"
+                                        maxlength="32"/>
+
+
+                            <p:outputLabel value="Email:" for="email"/>
+                            <p:inputText value="#{usuarioBean.usuario.email}"
+                                         maxlength="64"
+                                         size="40"
+                                         required="true"
+                                         id="email"
+                                         disabled="#{usuarioBean.ver}"
+                                         placeholder="email"
+                                         requiredMessage="preencha o campo email"
+                                         validatorMessage="email invalido">
+                                <f:validateRegex pattern="([^.@]+)(\.[^.@]+)*@([^.@]+\.)+([^.@]+)" />
+                            </p:inputText>
+
+                            <p:outputLabel value="Status:" for="status" rendered="#{session.getAttribute('usuarioLogado').nivel eq 'SUPER' or session.getAttribute('usuarioLogado').nivel eq 'ADMINISTRADOR'}"/>
+                            <p:selectOneMenu id='status'
+                                             value="#{usuarioBean.usuario.status}"
+                                             required="true"
+                                             rendered="#{session.getAttribute('usuarioLogado').nivel eq 'SUPER' or session.getAttribute('usuarioLogado').nivel eq 'ADMINISTRADOR'}"
+                                             disabled="#{usuarioBean.ver}"
+                                             requiredMessage="selecione o status">
+                                <f:selectItem itemLabel="selecione..."/>
+                                <f:selectItem itemValue="A" itemLabel="Ativo"/>
+                                <f:selectItem itemValue="I" itemLabel="Inativo"/>
+                                <f:selectItem itemValue="B" itemLabel="Bloqueado"/>
+                            </p:selectOneMenu>
+
+                            <p:outputLabel value="Nivel:" for="nivel"  rendered="#{session.getAttribute('usuarioLogado').nivel ne 'USUARIO'}"/>
+                            <p:selectOneMenu id='nivel'
+                                             rendered="#{session.getAttribute('usuarioLogado').nivel ne 'USUARIO'}"
+                                             disabled="#{usuarioBean.ver}"
+                                             value="#{usuarioBean.usuario.nivel}"
+                                             required="true"
+                                             requiredMessage="selecione o nivel">
+                                <f:selectItem itemLabel="selecione..."/>
+                                <f:selectItem itemValue="ADMINISTRADOR" itemLabel="ADMINISTRADOR"  />
+                                <f:selectItem itemValue="USUARIO" itemLabel="USUARIO"/>
+                            </p:selectOneMenu>
+
+                            <p:outputLabel value="Data Cadastro:" rendered="#{usuarioBean.ver}"  />
+                            <h:outputText value="#{usuarioBean.usuario.dataCadastro}" rendered="#{usuarioBean.ver}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/>
+                            </h:outputText>
+
+                            <p:outputLabel value="Data Alteracao:"  rendered="#{usuarioBean.ver}" />
+                            <h:outputText value="#{usuarioBean.usuario.dataAlteracao}" rendered="#{usuarioBean.ver}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/>
+                            </h:outputText>
+
+                            <p:outputLabel value="Usuario Alteracao:" rendered="#{usuarioBean.ver}" />
+                            <h:outputText value="#{util.nomeUsuario(usuarioBean.usuario.usuarioAlteracao)}" rendered="#{usuarioBean.ver}" />
+
+                            <p:commandButton value="salvar"
+                                             rendered="#{usuarioBean.ver eq false}"
+                                             actionListener="#{usuarioBean.salvar()}"
+                                             update="@form"
+                                             onstart="PF('statusDialog').show()" 
+                                             onsuccess="PF('statusDialog').hide();"
+                                             style="width: 100px">
+                                <p:confirm header="Confirmação" message="Tem certeza?" icon="ui-icon-alert" />
+                            </p:commandButton>
+
+                            <p:commandButton value="cancelar"
+                                             update="@form"
+                                             rendered="#{usuarioBean.ver eq false}"
+                                             immediate="true"
+                                             oncomplete="PF('dlgcriar').hide();"
+                                             onstart="PF('statusDialog').show()" 
+                                             onsuccess="PF('statusDialog').hide();"
+                                             style="width: 100px">
+                                <p:confirm header="Confirmação" message="Tem certeza?" icon="ui-icon-alert" />
+                            </p:commandButton>
+
+                        </p:panelGrid>
+
+
+                    </h:form>
+
+                </p:dialog>
+
+                <p:dialog
+                    modal="true"
+                    header="Revisoes"
+                    appendTo="@(body)"
+                    widgetVar="dlgrevisoes"
+                    width="950"
+                    height="300"
+                    resizable="false"
+                    closable="true"
+                    closeOnEscape="true"
+                    >
+
+                    <h:form id="revisoes">
+
+
+                        <p:dataTable value="#{usuarioBean.revisoes}"
+                                     var="usur"
+                                     rows="10"
+                                     paginator="true"
+                                     paginatorPosition="bottom"
+                                     scrollable="true"
+                                     scrollHeight="200"                                     
+                                     >
+
+                            <p:column headerText="Codigo"
+                                      width="30">
+                                <h:outputText value="#{usur.id}"/>
+                            </p:column>
+
+                            <p:column headerText="Foto"
+                                      width="70">
+                                <p:graphicImage height="50"
+                                                width="50"
+                                                url="#{usuarioBean.retornaFoto(usur)}"/>
+                            </p:column>
+
+                            <p:column headerText="Usuario"
+                                      width="100">
+                                <h:outputText value="#{usur.usuario}"/>
+                            </p:column>
+
+                            <p:column headerText="Email"
+                                      width="150">
+                                <h:outputText value="#{usur.email}"/>
+                            </p:column>
+
+                            <p:column headerText="Status"
+                                      width="50">
+                                <h:outputText value="#{usuarioBean.pegarStatus(usur.status)}"/>
+                            </p:column>
+
+                            <p:column headerText="Nivel"
+                                      width="70">
+                                <h:outputText value="#{usur.nivel}"/>
+                            </p:column>
+
+                            <p:column headerText="Data Cad"
+                                      width="90"
+                                      >
+                                <h:outputText value="#{usur.dataCadastro}" style="font-size: 9px">
+                                    <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/>
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Data Alt"
+                                      width="90">
+                                <h:outputText value="#{usur.dataAlteracao}" style="font-size: 9px">
+                                    <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/>
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Usuario Alt"
+                                      width="80">
+                                <h:outputText value="#{util.nomeUsuario(usur.usuarioAlteracao)}"/>
+                            </p:column>
+
+
+                        </p:dataTable>
+
+                    </h:form>
+
+                </p:dialog>
+
+
+                <p:dialog  header="Enviar foto" 
+                           width="750"
+                           height="150" 
+                           widgetVar="dlgfoto"  
+                           resizable="false"
+                           modal="true"
+                           appendTo="@(body)"
+                           closable="true"
+                           draggable="false"
+                           closeOnEscape="true"
+                           > 
+
+
+                    <h:form id="foto" enctype="multipart/form-data">
+
+                        <p:fileUpload id="upload" 
+                                      mode="advanced" 
+                                      onstart="PF('statusDialog').show()" 
+                                      required="true"                                        
+                                      cancelLabel="Cancelar"
+                                      style="margin-top: 15px;"
+                                      requiredMessage="Selecione  uma foto!"
+                                      allowTypes="/(\.|\/)(gif|jpe?g|png|jpg)$/"
+                                      invalidFileMessage="Tipo de arquivo nao permitido" 
+                                      invalidSizeMessage="Tamanho excedido(100kb)" 
+                                      uploadLabel="Processar foto"
+                                      fileLimit="1"
+                                      fileLimitMessage="Apenas uma foto por vez"
+                                      fileUploadListener="#{usuarioBean.processarFoto}"
+                                      dragDropSupport="true"
+                                      label="Selecionar foto..." 
+                                      multiple="false"
+                                      sizeLimit="102400" 
+                                      update="@form"
+                                      oncomplete="PF('statusDialog').hide();removerDesabilitados();"/>                     
+
+
+                    </h:form>
+
+                </p:dialog>
+
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

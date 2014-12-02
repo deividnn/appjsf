@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/appjsf" allowCasualMultipartParsing="true">
+    <WatchedResource>WEB-INF/web.xml</WatchedResource>
+    <Manager className="org.apache.catalina.session.PersistentManager" maxActiveSessions="-1" maxIdleBackup="-1" maxIdleSwap="-1" minIdleSwap="-1" saveOnRestart="false">
+        <Store className="org.apache.catalina.session.FileStore"/>
+    </Manager>
+    <Resources cacheMaxSize="10240000" cacheObjectMaxSize="512000" cachingAllowed="true"/>
+    <Resource name="jdbc/appjsf"
+              auth="Container"
+              driverClassName="org.postgresql.Driver"
+              url="jdbc:postgresql://localhost:5432/appjsf"
+              username="deivid"
+              password="deivid"
+              testOnBorrow="true"
+              testWhileIdle="true"
+              factory="org.apache.tomcat.jdbc.pool.DataSourceFactory" 
+              type="javax.sql.DataSource" 
+              maxPoolSize="20" 
+              minPoolSize="5" 
+              acquireIncrement="1" 
+              maxActive="100"
+              timeBetweenEvictionRunsMillis="30000"
+              removeAbandoned="true"
+              removeAbandonedTimeout="60"
+              logAbandoned="true"
+              validatonQuery="SELECT 1"
+              validationInterval="30000"    
+              abandonWhenPercentageFull="50"
+              closeMethod="close" />
+    
+    <ResourceLink name="jdbc/appjsf"
+                  global="jdbc/appjsf"
+                  type="javax.sql.DataSource" />
+
+
+</Context>
