@@ -2,6 +2,7 @@ appjsf
 ======
 
 sistema base jsf<br/>
+<a href='http://youtu.be/jH5qALIvHXA'>video demosntracao</a><br/
 SISTEMA SIMPLES EM JSF<br/>
 <br/><br/>
 JDK8<br/>
@@ -13,30 +14,30 @@ POSTGRESQL 9.3<br/>
 TOMCAT 8.0.9<br/>
 IREPORT 5.6.1<br/>
 PRETTYFACES 2.0.12<br/>
-TESTADO NO GOOGLE CROME 39<br/>
-				-estrategia de cache usando hibernate ehcache 
-				-versoes usando hibernate envers  
-				-pool de conexao no context.xml 
-				-relatorios pdf com jasperrerpot 
-				-autenticacao 
-				-autorizacao com phaselistener
-				-criptografia de senha em md5
-				-upload de arquivo 
-				-envio de email 
-				-aviso de pagina expirada 
-				-paginas de erro customizada
-				-atalhos de teclado
-				-rescrita de url com prettyfaces
-				-compactacao de pasta
--fazer login
--inserir usuario
--alterar usuario
--excluir usuario
--listar usuarios
--pesquisar usuarios
--mostrar usuario
--mostrar versoes do usuario
--fazer logout
+TESTADO NO GOOGLE CROME 39<br/><br/>
+				-estrategia de cache usando hibernate ehcache <br/>
+				-versoes usando hibernate envers  <br/>
+				-pool de conexao no context.xml <br/>
+				-relatorios pdf com jasperrerpot <br/>
+				-autenticacao <br/>
+				-autorizacao com phaselistener<br/>
+				-criptografia de senha em md5<br/>
+				-upload de arquivo <br/>
+				-envio de email <br/>
+				-aviso de pagina expirada <br/>
+				-paginas de erro customizada<br/>
+				-atalhos de teclado<br/>
+				-rescrita de url com prettyfaces<br/>
+				-compactacao de pasta<br/><br/>
+-fazer login<br/>
+-inserir usuario<br/>
+-alterar usuario<br/>
+-excluir usuario<br/>
+-listar usuarios<br/>
+-pesquisar usuarios<br/>
+-mostrar usuario<br/>
+-mostrar versoes do usuario<br/>
+-fazer logout<br/>
 
 
  
